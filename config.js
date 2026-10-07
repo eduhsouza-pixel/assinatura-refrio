@@ -13,10 +13,9 @@ window.REFRIO_CONFIG = {
   telefoneEmpresa: "",
 
   // Redes sociais — deixe vazio para ocultar o ícone.
-  // CONFIRMAR os endereços oficiais antes de distribuir.
   redes: {
-    linkedin: "https://www.linkedin.com/company/refrio",
-    instagram: "https://www.instagram.com/refrio",
+    linkedin: "",
+    instagram: "",
     facebook: "",
     youtube: "",
   },
