@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Assinaturas Refrio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap topbar-in">
+    <img src="assets/logo-refrio-branco.png" alt="Refrio by Elgin" class="brand">
+    <div class="topbar-title">
+      <strong>Gerador de Assinaturas</strong>
+      <span>Assinatura de e-mail padronizada para toda a equipe</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap layout">
+  <section class="panel">
+    <nav class="tabs" role="tablist">
+      <button class="tab active" data-tab="individual">Individual</button>
+      <button class="tab" data-tab="lote">Em lote (CSV)</button>
+      <button class="tab" data-tab="empresa">Empresa</button>
+    </nav>
+
+    <!-- INDIVIDUAL -->
+    <div class="tabpane active" id="tab-individual">
+      <div class="grid2">
+        <label class="full">Nome completo<input id="p-nome" placeholder="Nome Sobrenome"></label>
+        <label>Cargo<input id="p-cargo" placeholder="Engenheiro de Aplicação"></label>
+        <label>Departamento<input id="p-departamento" placeholder="Engenharia"></label>
+        <label class="full">E-mail<input id="p-email" type="email" placeholder="nome@refrio.com"></label>
+        <label>Telefone<input id="p-telefone" placeholder="+55 19 3333-0000"></label>
+        <label>Ramal<input id="p-ramal" placeholder="1234"></label>
+        <label>Celular<input id="p-celular" placeholder="+55 19 91234-5678"></label>
+        <label class="check"><input id="p-whatsapp" type="checkbox" checked> Celular é WhatsApp</label>
+      </div>
+    </div>
+
+    <!-- LOTE -->
+    <div class="tabpane" id="tab-lote">
+      <p class="hint">Cole uma planilha (copie direto do Excel) ou envie um CSV com as colunas:
+        <code>nome; cargo; departamento; email; telefone; ramal; celular; whatsapp</code></p>
+      <div class="row">
+        <label class="btn ghost file">Enviar CSV<input type="file" id="csv-file" accept=".csv,.txt" hidden></label>
+        <button class="btn ghost" id="csv-modelo">Baixar modelo</button>
+      </div>
+      <textarea id="csv-text" rows="7" spellcheck="false" placeholder="nome;cargo;departamento;email;telefone;ramal;celular;whatsapp&#10;Ana Souza;Gerente Comercial;Vendas;ana.souza@refrio.com;+55 19 3333-0000;210;+55 19 99999-0000;sim"></textarea>
+      <div class="row">
+        <button class="btn" id="csv-gerar">Gerar assinaturas</button>
+        <button class="btn ghost" id="zip-baixar" disabled>Baixar todas (.zip)</button>
+      </div>
+      <div id="lote-lista" class="lote-lista"></div>
+    </div>
+
+    <!-- EMPRESA -->
+    <div class="tabpane" id="tab-empresa">
+      <p class="hint">Valem para todas as assinaturas. Ficam salvos neste navegador; use <b>Exportar config.js</b> para tornar padrão para todos.</p>
+      <h4>Modelo</h4>
+      <div class="modelos">
+        <label class="modelo"><input type="radio" name="modelo" value="classica"><span>Clássica<small>logo + divisória azul</small></span></label>
+        <label class="modelo"><input type="radio" name="modelo" value="faixa"><span>Bloco marinho<small>logo branco em destaque</small></span></label>
+      </div>
+      <h4>Imagens</h4>
+      <div class="grid2">
+        <label class="full">URL pública desta pasta (necessária para Gmail)
+          <input id="c-baseUrl" placeholder="https://assinatura.refrio.com/"></label>
+        <div class="full upload">
+          <span>Logo (fundo claro)</span>
+          <label class="btn ghost small file">Trocar imagem<input type="file" data-img="logo" accept="image/*" hidden></label>
+          <button class="btn ghost small" data-reset="logo">Padrão</button>
+        </div>
+        <div class="full upload">
+          <span>Logo (fundo marinho)</span>
+          <label class="btn ghost small file">Trocar imagem<input type="file" data-img="logoBranco" accept="image/*" hidden></label>
+          <button class="btn ghost small" data-reset="logoBranco">Padrão</button>
+        </div>
+        <label class="full">Banner abaixo da assinatura (URL da imagem, 600px de largura)
+          <input id="c-banner" placeholder="https://.../banner-febrava.png"></label>
+        <div class="full upload">
+          <span>…ou enviar banner</span>
+          <label class="btn ghost small file">Enviar imagem<input type="file" data-img="banner" accept="image/*" hidden></label>
+          <button class="btn ghost small" data-reset="banner">Remover</button>
+        </div>
+        <label class="full">Link do banner<input id="c-bannerLink" placeholder="https://www.refrio.com/..."></label>
+      </div>
+      <h4>Empresa e contato</h4>
+      <div class="grid2">
+        <label>Site<input id="c-site"></label>
+        <label>Telefone geral<input id="c-telefoneEmpresa" placeholder="+55 19 0000-0000"></label>
+        <label class="full">Endereço<input id="c-endereco"></label>
+      </div>
+      <h4>Redes sociais <small>(vazio = oculta)</small></h4>
+      <div class="grid2">
+        <label>LinkedIn<input id="c-redes.linkedin"></label>
+        <label>Instagram<input id="c-redes.instagram"></label>
+        <label>Facebook<input id="c-redes.facebook"></label>
+        <label>YouTube<input id="c-redes.youtube"></label>
+      </div>
+      <h4>Cores</h4>
+      <div class="cores">
+        <label>Marinho<input type="color" id="c-cores.marinho"></label>
+        <label>Azul<input type="color" id="c-cores.azul"></label>
+        <label>Texto<input type="color" id="c-cores.texto"></label>
+        <label>Suave<input type="color" id="c-cores.suave"></label>
+      </div>
+      <h4>Aviso legal <small>(opcional)</small></h4>
+      <textarea id="c-aviso" rows="3" placeholder="Esta mensagem pode conter informações confidenciais..."></textarea>
+      <div class="row">
+        <button class="btn" id="cfg-exportar">Exportar config.js</button>
+        <button class="btn ghost" id="cfg-reset">Restaurar padrão</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="preview-col">
+    <div class="preview-card">
+      <div class="preview-head">
+        <span>Pré-visualização</span>
+        <div class="seg" id="bg-toggle">
+          <button class="active" data-bg="light">Claro</button>
+          <button data-bg="dark">Escuro</button>
+        </div>
+      </div>
+      <div class="mail" id="mail">
+        <div class="mail-meta">
+          <div><b>Para:</b> cliente@empresa.com.br</div>
+          <div><b>Assunto:</b> Proposta técnica — evaporadores</div>
+        </div>
+        <p class="mail-body">Olá, tudo bem?<br>Segue em anexo a proposta conforme conversamos.<br><br>Atenciosamente,</p>
+        <div id="preview"></div>
+      </div>
+      <div id="aviso-img" class="alert" hidden></div>
+      <div class="actions">
+        <button class="btn" id="copiar">Copiar assinatura</button>
+        <button class="btn ghost" id="copiar-html">Copiar código HTML</button>
+        <button class="btn ghost" id="baixar-htm">Baixar .htm (Outlook)</button>
+        <button class="btn ghost" id="baixar-png">Baixar PNG</button>
+      </div>
+    </div>
+
+    <details class="howto">
+      <summary>Como instalar a assinatura</summary>
+      <div class="howto-grid">
+        <div><h5>Gmail</h5><ol><li>Clique em <b>Copiar assinatura</b>.</li><li>Gmail → ⚙️ → <b>Ver todas as configurações</b> → <b>Assinatura</b>.</li><li>Crie uma nova, cole (Ctrl+V) e salve no fim da página.</li></ol><p class="hint">As imagens só aparecem no Gmail se a <b>URL pública</b> estiver configurada.</p></div>
+        <div><h5>Outlook (novo / Web)</h5><ol><li>Clique em <b>Copiar assinatura</b>.</li><li>⚙️ Configurações → <b>Contas</b> → <b>Assinaturas</b>.</li><li>Cole no editor e salve. Defina como padrão para novos e-mails e respostas.</li></ol></div>
+        <div><h5>Outlook clássico (Windows)</h5><ol><li>Clique em <b>Baixar .htm</b>.</li><li>Pressione Win+R e abra <code>%APPDATA%\Microsoft\Signatures</code>.</li><li>Copie o arquivo para lá e selecione em Arquivo → Opções → Email → Assinaturas.</li></ol></div>
+        <div><h5>Apple Mail / iPhone</h5><ol><li>Use <b>Copiar assinatura</b> e cole em Ajustes → Assinaturas.</li><li>No iPhone, cole e agite para desfazer a formatação automática se necessário.</li></ol></div>
+      </div>
+    </details>
+  </section>
+</main>
+
+<div id="toast" class="toast"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="assets.js"></script>
+<script src="config.js"></script>
+<script src="signature.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
